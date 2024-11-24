@@ -5,11 +5,11 @@ import { TypeAnimation } from "react-type-animation";
 const Hero = () => {
   return (
     <section id="home" className="relative w-full h-screen mx-auto overflow-hidden">
-      <div className="relative z-0 max-w-7xl mx-auto px-6 sm:px-8 md:px-12 h-full flex flex-col md:flex-row items-center justify-center gap-8">
+      <div className="relative z-40 max-w-7xl mx-auto px-6 sm:px-8 md:px-12 h-full flex flex-col md:flex-row items-center justify-center gap-8">
         {/* Left side - Text content */}
         <div className="inner-container w-full md:w-1/2 flex flex-col items-start">
           <div className="text-container flex flex-col gap-2">
-            <h1 className="relative z-10 text-4xl sm:text-5xl lg:text-6xl font-black text-white">
+            <h1 className="relative z-40 text-4xl sm:text-5xl lg:text-6xl font-black text-white">
               Hi, I'm{" "}
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-500 to-cyan-500">
                 Dhruv Sharma

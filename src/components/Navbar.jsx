@@ -78,7 +78,7 @@ export const Navbar = () => {
   return (
     <>
       {/* Navbar Container */}
-      <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 border-b ${
+      <nav className={`fixed top-0 left-0 right-0 z-30 transition-all duration-300 border-b ${
         scrolled 
           ? "bg-gray-900/70 backdrop-blur-md border-gray-800/30" 
           : "bg-transparent border-transparent"
@@ -88,7 +88,7 @@ export const Navbar = () => {
           {/* Content Wrapper */}
           <div className="flex items-center justify-between py-5">
             {/* Logo Name */}
-            <a href="#home" className="text-white text-xl font-bold cursor-pointer">DS</a>
+            <a href="#home" className="text-white text-xl font-bold cursor-pointer relative z-30">DS</a>
 
             {/* Navigation Links */}
             <div className="hidden md:flex items-center gap-8">
