@@ -22,6 +22,20 @@ export const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
   const [activeSection, setActiveSection] = useState('home');
 
+  // Handle mobile menu
+  const toggleMenu = () => {
+    setIsOpen(!isOpen);
+    // Prevent body scroll when menu is open
+    document.body.style.overflow = !isOpen ? 'hidden' : 'unset';
+  };
+
+  // Close menu when clicking a link
+  const handleLinkClick = (sectionId) => {
+    setIsOpen(false);
+    document.body.style.overflow = 'unset';
+    setActiveSection(sectionId);
+  };
+
   // Handle Scroll
   useEffect(() => {
     const handleScroll = () => {
@@ -124,19 +138,21 @@ export const Navbar = () => {
 
             {/* Mobile Menu Button */}
             <button
-              className="md:hidden text-white p-1.5 sm:p-2 relative z-50"
-              onClick={() => setIsOpen(!isOpen)}
+              type="button"
+              className="md:hidden relative z-50 p-2 w-10 h-10 flex items-center justify-center focus:outline-none"
+              onClick={toggleMenu}
               aria-label="Toggle menu"
+              aria-expanded={isOpen}
             >
-              <div className="flex flex-col gap-1.5">
-                <span className={`block h-0.5 w-5 sm:w-6 bg-white transition-all duration-300 transform ${
-                  isOpen ? "rotate-45 translate-y-2" : ""
+              <div className="flex flex-col justify-center items-center w-6 h-6">
+                <span className={`block h-0.5 w-full bg-white transition-all duration-300 transform ${
+                  isOpen ? "rotate-45 translate-y-1.5" : ""
                 }`}></span>
-                <span className={`block h-0.5 w-5 sm:w-6 bg-white transition-all duration-300 ${
+                <span className={`block h-0.5 w-full bg-white transition-all duration-300 mt-1 ${
                   isOpen ? "opacity-0" : ""
                 }`}></span>
-                <span className={`block h-0.5 w-5 sm:w-6 bg-white transition-all duration-300 transform ${
-                  isOpen ? "-rotate-45 -translate-y-2" : ""
+                <span className={`block h-0.5 w-full bg-white transition-all duration-300 mt-1 transform ${
+                  isOpen ? "-rotate-45 -translate-y-1.5" : ""
                 }`}></span>
               </div>
             </button>
@@ -144,40 +160,30 @@ export const Navbar = () => {
         </div>
       </nav>
 
-      {/* Mobile Menu Overlay */}
-      {isOpen && (
-        <div 
-          className="fixed inset-0 bg-black/20 backdrop-blur-sm md:hidden z-40"
-          onClick={() => setIsOpen(false)}
-        />
-      )}
-
       {/* Mobile Menu */}
       <div
-        className={`md:hidden fixed top-[3.25rem] sm:top-[3.75rem] right-0 w-[60%] bg-gray-900/95 backdrop-blur-sm py-6 px-6 sm:px-8 transition-all duration-300 ease-in-out z-50 border-l border-gray-800/50 h-[calc(100vh-3.25rem)] sm:h-[calc(100vh-3.75rem)] ${
-          isOpen
-            ? "opacity-100 translate-x-0 shadow-xl"
-            : "opacity-0 translate-x-full pointer-events-none"
-        }`}
+        className={`fixed inset-y-0 right-0 w-[60%] bg-gray-900/95 backdrop-blur-sm px-6 py-20 transition-all duration-300 ease-in-out z-40 shadow-xl border-l border-gray-800/50 transform ${
+          isOpen ? "translate-x-0" : "translate-x-full"
+        } md:hidden`}
       >
-        <div className="flex flex-col items-start gap-6">
+        <div className="flex flex-col items-start gap-8">
           {navLinks.map((link) => (
             <a
               key={link.title}
               href={link.href}
-              onClick={() => setIsOpen(false)}
+              onClick={() => handleLinkClick(link.href.slice(1))}
               className={`${
                 activeSection === link.href.slice(1)
                   ? "text-purple-500 font-medium"
                   : "text-gray-300"
-              } text-base sm:text-lg hover:text-white transition-colors duration-300`}
+              } text-lg hover:text-white transition-colors duration-300 w-full`}
             >
               {link.title}
             </a>
           ))}
           
           {/* Social Links - Mobile */}
-          <div className="flex items-center gap-4 pt-6 border-t border-gray-800/50 w-full">
+          <div className="flex items-center gap-6 pt-8 border-t border-gray-800/50 w-full">
             {socialLinks.map((social, index) => (
               <a
                 key={index}
@@ -192,6 +198,15 @@ export const Navbar = () => {
           </div>
         </div>
       </div>
+
+      {/* Overlay */}
+      {isOpen && (
+        <div 
+          className="fixed inset-0 bg-black/20 backdrop-blur-sm z-30 md:hidden"
+          onClick={toggleMenu}
+          aria-hidden="true"
+        />
+      )}
     </>
   );
 };
