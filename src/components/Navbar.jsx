@@ -25,33 +25,42 @@ export const Navbar = () => {
   // Handle Scroll
   useEffect(() => {
     const handleScroll = () => {
-      const heroSection = document.getElementById('home');
-      const heroBottom = heroSection?.getBoundingClientRect().bottom;
-      
-      if (heroBottom <= 0) {
-        setScrolled(true);
-      } else {
-        setScrolled(false);
-      }
+      try {
+        // Check scroll position for navbar background
+        const scrollPosition = window.scrollY;
+        setScrolled(scrollPosition > 50);
 
-      // Update active section based on scroll position
-      const sections = navLinks.map(link => link.href.slice(1));
-      const currentSection = sections.find(section => {
-        const element = document.getElementById(section);
-        if (element) {
-          const rect = element.getBoundingClientRect();
-          return rect.top <= 100 && rect.bottom >= 100;
+        // Update active section
+        const sections = navLinks.map(link => link.href.slice(1));
+        let currentSection = 'home';
+
+        for (const section of sections) {
+          const element = document.getElementById(section);
+          if (element) {
+            const rect = element.getBoundingClientRect();
+            if (rect.top <= 100 && rect.bottom >= 100) {
+              currentSection = section;
+              break;
+            }
+          }
         }
-        return false;
-      });
-      
-      if (currentSection) {
+        
         setActiveSection(currentSection);
+      } catch (error) {
+        console.error('Error in scroll handler:', error);
       }
     };
 
+    // Add scroll event listener
     window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
+    
+    // Initial check
+    handleScroll();
+
+    // Cleanup
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
   }, []);
 
   // Handle Click Outside
