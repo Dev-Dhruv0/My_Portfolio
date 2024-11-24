@@ -84,11 +84,11 @@ export const Navbar = () => {
           : "bg-transparent border-transparent"
       }`}>
         {/* Inner Nav */}
-        <div className="max-w-7xl mx-auto px-6 sm:px-8 md:px-12">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8">
           {/* Content Wrapper */}
-          <div className="flex items-center justify-between py-5">
+          <div className="flex items-center justify-between py-4 sm:py-5">
             {/* Logo Name */}
-            <a href="#home" className="text-white text-xl font-bold cursor-pointer relative z-30">DS</a>
+            <a href="#home" className="text-white text-lg sm:text-xl font-bold cursor-pointer relative z-30">DS</a>
 
             {/* Navigation Links */}
             <div className="hidden md:flex items-center gap-8">
@@ -100,7 +100,7 @@ export const Navbar = () => {
                     activeSection === link.href.slice(1)
                       ? "text-purple-500 font-medium"
                       : "text-gray-300"
-                  } hover:text-white transition-all duration-300 relative after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 after:h-[2px] after:bg-purple-500 after:transition-all after:duration-300 hover:after:w-full`}
+                  } text-sm lg:text-base hover:text-white transition-all duration-300`}
                 >
                   {link.title}
                 </a>
@@ -124,17 +124,17 @@ export const Navbar = () => {
 
             {/* Mobile Menu Button */}
             <button
-              className="md:hidden text-white p-2"
+              className="md:hidden text-white p-1.5 sm:p-2"
               onClick={() => setIsOpen(!isOpen)}
             >
               <div className="flex flex-col gap-1.5">
-                <span className={`block h-0.5 w-6 bg-white transition-all duration-300 ${
+                <span className={`block h-0.5 w-5 sm:w-6 bg-white transition-all duration-300 ${
                   isOpen ? "rotate-45 translate-y-2" : ""
                 }`}></span>
-                <span className={`block h-0.5 w-6 bg-white transition-all duration-300 ${
+                <span className={`block h-0.5 w-5 sm:w-6 bg-white transition-all duration-300 ${
                   isOpen ? "opacity-0" : ""
                 }`}></span>
-                <span className={`block h-0.5 w-6 bg-white transition-all duration-300 ${
+                <span className={`block h-0.5 w-5 sm:w-6 bg-white transition-all duration-300 ${
                   isOpen ? "-rotate-45 -translate-y-2" : ""
                 }`}></span>
               </div>
@@ -145,7 +145,7 @@ export const Navbar = () => {
 
       {/* Mobile Menu */}
       <div
-        className={`md:hidden fixed top-[4rem] right-0 w-[60%] bg-gray-900/95 backdrop-blur-sm py-6 px-8 transition-all duration-300 ease-in-out z-50 border-l border-gray-800/50 h-screen ${
+        className={`md:hidden fixed top-[3.25rem] sm:top-[3.75rem] right-0 w-[60%] bg-gray-900/95 backdrop-blur-sm py-6 px-6 sm:px-8 transition-all duration-300 ease-in-out z-50 border-l border-gray-800/50 h-[calc(100vh-3.25rem)] sm:h-[calc(100vh-3.75rem)] ${
           isOpen
             ? "opacity-100 translate-x-0"
             : "opacity-0 translate-x-full pointer-events-none"
