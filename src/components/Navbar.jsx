@@ -124,17 +124,18 @@ export const Navbar = () => {
 
             {/* Mobile Menu Button */}
             <button
-              className="md:hidden text-white p-1.5 sm:p-2"
+              className="md:hidden text-white p-1.5 sm:p-2 relative z-50"
               onClick={() => setIsOpen(!isOpen)}
+              aria-label="Toggle menu"
             >
               <div className="flex flex-col gap-1.5">
-                <span className={`block h-0.5 w-5 sm:w-6 bg-white transition-all duration-300 ${
+                <span className={`block h-0.5 w-5 sm:w-6 bg-white transition-all duration-300 transform ${
                   isOpen ? "rotate-45 translate-y-2" : ""
                 }`}></span>
                 <span className={`block h-0.5 w-5 sm:w-6 bg-white transition-all duration-300 ${
                   isOpen ? "opacity-0" : ""
                 }`}></span>
-                <span className={`block h-0.5 w-5 sm:w-6 bg-white transition-all duration-300 ${
+                <span className={`block h-0.5 w-5 sm:w-6 bg-white transition-all duration-300 transform ${
                   isOpen ? "-rotate-45 -translate-y-2" : ""
                 }`}></span>
               </div>
@@ -143,11 +144,19 @@ export const Navbar = () => {
         </div>
       </nav>
 
+      {/* Mobile Menu Overlay */}
+      {isOpen && (
+        <div 
+          className="fixed inset-0 bg-black/20 backdrop-blur-sm md:hidden z-40"
+          onClick={() => setIsOpen(false)}
+        />
+      )}
+
       {/* Mobile Menu */}
       <div
         className={`md:hidden fixed top-[3.25rem] sm:top-[3.75rem] right-0 w-[60%] bg-gray-900/95 backdrop-blur-sm py-6 px-6 sm:px-8 transition-all duration-300 ease-in-out z-50 border-l border-gray-800/50 h-[calc(100vh-3.25rem)] sm:h-[calc(100vh-3.75rem)] ${
           isOpen
-            ? "opacity-100 translate-x-0"
+            ? "opacity-100 translate-x-0 shadow-xl"
             : "opacity-0 translate-x-full pointer-events-none"
         }`}
       >
@@ -161,7 +170,7 @@ export const Navbar = () => {
                 activeSection === link.href.slice(1)
                   ? "text-purple-500 font-medium"
                   : "text-gray-300"
-              } text-lg hover:text-white transition-colors duration-300`}
+              } text-base sm:text-lg hover:text-white transition-colors duration-300`}
             >
               {link.title}
             </a>
