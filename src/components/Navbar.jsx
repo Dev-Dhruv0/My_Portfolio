@@ -136,30 +136,30 @@ export const Navbar = () => {
 
       {/* Mobile Menu */}
       <div
-        className={`md:hidden fixed top-[4rem] left-0 w-full bg-primary/95 backdrop-blur-sm py-6 px-8 transition-all duration-300 ease-in-out ${
+        className={`md:hidden fixed top-[4rem] right-0 w-[60%] bg-gray-900/95 backdrop-blur-sm py-6 px-8 transition-all duration-300 ease-in-out z-50 border-l border-gray-800/50 h-screen ${
           isOpen
-            ? "opacity-100 translate-y-0"
-            : "opacity-0 -translate-y-full pointer-events-none"
+            ? "opacity-100 translate-x-0"
+            : "opacity-0 translate-x-full pointer-events-none"
         }`}
       >
-        <div className="flex flex-col items-center gap-6">
+        <div className="flex flex-col items-start gap-6">
           {navLinks.map((link) => (
             <a
               key={link.title}
               href={link.href}
+              onClick={() => setIsOpen(false)}
               className={`${
                 activeSection === link.href.slice(1)
                   ? "text-purple-500 font-medium"
                   : "text-gray-300"
-              } hover:text-white transition-colors duration-300`}
-              onClick={() => setIsOpen(false)}
+              } text-lg hover:text-white transition-colors duration-300`}
             >
               {link.title}
             </a>
           ))}
-
+          
           {/* Social Links - Mobile */}
-          <div className="flex items-center gap-6 mt-4 pt-6 border-t border-gray-700 w-full justify-center">
+          <div className="flex items-center gap-4 pt-6 border-t border-gray-800/50 w-full">
             {socialLinks.map((social, index) => (
               <a
                 key={index}
