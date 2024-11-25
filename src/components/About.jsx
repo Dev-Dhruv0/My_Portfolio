@@ -1,14 +1,19 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { motion } from 'framer-motion';
+import TechIcon from './TechIcons';
+import TechModal from './TechModal';
+import { techStackData } from '../data/techStack';
 
 // Import your tech stack images
-import reactIcon from '../assets/react-svgrepo-com.svg';
-import jsIcon from '../assets/javascript-svgrepo-com.svg';
-import nodeIcon from '../assets/node-svgrepo-com.svg';
-import tailwindIcon from '../assets/tailwind-svgrepo-com.svg';
+// import reactIcon from '../assets/react-svgrepo-com.svg';
+// import jsIcon from '../assets/javascript-svgrepo-com.svg';
+// import nodeIcon from '../assets/node-svgrepo-com.svg';
+// import tailwindIcon from '../assets/tailwind-svgrepo-com.svg';
 
 export const About = () => {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  const [selectedTech, setSelectedTech] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   
   const handleMouseMove = (e) => {
     const { clientX, clientY } = e;
@@ -17,6 +22,18 @@ export const About = () => {
       x: clientX - left,
       y: clientY - top
     });
+  };
+
+  // Modal handler
+  const handleOpenModal = (tech) => {
+    setSelectedTech(tech);
+    setIsModalOpen(true);
+  };
+
+  // Close Modal handler
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+    setSelectedTech(null);
   };
 
   return (
@@ -67,77 +84,25 @@ export const About = () => {
             </div>
           </div>
 
-          {/* Right Side - Floating Icons */}
+          {/* Right Side - Tech Stack */}
           <div className='relative w-full md:w-1/2 h-[400px]'>
-            {/* Floating Image 1 */}
-            <motion.div
-              className='absolute w-20 h-20 top-0 left-[20%]'
-              animate={{
-                y: [0, -20, 0],
-                rotate: [0, 10, 0]
-              }}
-              transition={{
-                duration: 4,
-                repeat: Infinity,
-                ease: "easeInOut"
-              }}
-            >
-              <img src={reactIcon} alt="React" className='w-full h-full object-contain' />
-            </motion.div>
-
-            {/* Floating Image 2 */}
-            <motion.div
-              className='absolute w-16 h-16 top-[30%] right-[20%]'
-              animate={{
-                y: [0, 20, 0],
-                rotate: [0, -10, 0]
-              }}
-              transition={{
-                duration: 3,
-                repeat: Infinity,
-                ease: "easeInOut",
-                delay: 0.5
-              }}
-            >
-              <img src={jsIcon} alt="JavaScript" className='w-full h-full object-contain' />
-            </motion.div>
-
-            {/* Floating Image 3 */}
-            <motion.div
-              className='absolute w-24 h-24 bottom-[30%] left-[10%]'
-              animate={{
-                y: [0, 15, 0],
-                rotate: [0, 5, 0]
-              }}
-              transition={{
-                duration: 3.5,
-                repeat: Infinity,
-                ease: "easeInOut",
-                delay: 1
-              }}
-            >
-              <img src={nodeIcon} alt="Node.js" className='w-full h-full object-contain' />
-            </motion.div>
-
-            {/* Floating Image 4 */}
-            <motion.div
-              className='absolute w-20 h-20 bottom-[10%] right-[30%]'
-              animate={{
-                y: [0, -15, 0],
-                rotate: [0, -5, 0]
-              }}
-              transition={{
-                duration: 4,
-                repeat: Infinity,
-                ease: "easeInOut",
-                delay: 1.5
-              }}
-            >
-              <img src={tailwindIcon} alt="Tailwind CSS" className='w-full h-full object-contain' />
-            </motion.div>
+          {techStackData.map((tech) => (
+            <TechIcon 
+              key={tech.id}
+              tech={tech}
+              onOpenModal={handleOpenModal}
+            />
+          ))}
           </div>
         </div>
       </div>
+
+      {/* Tech Modal */}
+      <TechModal 
+        isOpen={isModalOpen}
+        onClose={handleCloseModal}
+        tech={selectedTech}
+      />
     </section>
   );
 };
