@@ -16,12 +16,19 @@ const Hero = () => {
               </span>
             </h1>
             <TypeAnimation
-              sequence={["Frontend Developer", 1000, "UI/UX Designer", 1000, "React Developer", 1000]}
+              sequence={[
+                "Frontend Developer",
+                1000,
+                "UI/UX Designer",
+                1000,
+                "React Developer",
+                1000
+              ]}
               wrapper="span"
               speed={50}
               className="text-gray-400 text-xl sm:text-2xl"
               repeat={Infinity}
-            />// Add below your description
+            />
             <div className="flex flex-wrap gap-2 mt-4">
               {['React', 'JavaScript', 'TypeScript', 'Node.js', 'Tailwind'].map((tag) => (
                 <span 
