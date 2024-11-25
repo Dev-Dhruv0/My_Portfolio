@@ -22,59 +22,36 @@ export const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
   const [activeSection, setActiveSection] = useState('home');
 
-  // Handle mobile menu
-  const toggleMenu = () => {
-    setIsOpen(!isOpen);
-    // Prevent body scroll when menu is open
-    document.body.style.overflow = !isOpen ? 'hidden' : 'unset';
-  };
-
-  // Close menu when clicking a link
-  const handleLinkClick = (sectionId) => {
-    setIsOpen(false);
-    document.body.style.overflow = 'unset';
-    setActiveSection(sectionId);
-  };
-
   // Handle Scroll
   useEffect(() => {
     const handleScroll = () => {
-      try {
-        // Check scroll position for navbar background
-        const scrollPosition = window.scrollY;
-        setScrolled(scrollPosition > 50);
+      const heroSection = document.getElementById('home');
+      const heroBottom = heroSection?.getBoundingClientRect().bottom;
+      
+      if (heroBottom <= 0) {
+        setScrolled(true);
+      } else {
+        setScrolled(false);
+      }
 
-        // Update active section
-        const sections = navLinks.map(link => link.href.slice(1));
-        let currentSection = 'home';
-
-        for (const section of sections) {
-          const element = document.getElementById(section);
-          if (element) {
-            const rect = element.getBoundingClientRect();
-            if (rect.top <= 100 && rect.bottom >= 100) {
-              currentSection = section;
-              break;
-            }
-          }
+      // Update active section based on scroll position
+      const sections = navLinks.map(link => link.href.slice(1));
+      const currentSection = sections.find(section => {
+        const element = document.getElementById(section);
+        if (element) {
+          const rect = element.getBoundingClientRect();
+          return rect.top <= 100 && rect.bottom >= 100;
         }
-        
+        return false;
+      });
+      
+      if (currentSection) {
         setActiveSection(currentSection);
-      } catch (error) {
-        console.error('Error in scroll handler:', error);
       }
     };
 
-    // Add scroll event listener
     window.addEventListener("scroll", handleScroll);
-    
-    // Initial check
-    handleScroll();
-
-    // Cleanup
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   // Handle Click Outside
@@ -92,17 +69,17 @@ export const Navbar = () => {
   return (
     <>
       {/* Navbar Container */}
-      <nav className={`fixed top-0 left-0 right-0 z-30 transition-all duration-300 border-b ${
+      <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 border-b ${
         scrolled 
           ? "bg-gray-900/70 backdrop-blur-md border-gray-800/30" 
           : "bg-transparent border-transparent"
       }`}>
         {/* Inner Nav */}
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8">
+        <div className="max-w-7xl mx-auto px-6 sm:px-8 md:px-12">
           {/* Content Wrapper */}
-          <div className="flex items-center justify-between py-4 sm:py-5">
+          <div className="flex items-center justify-between py-5">
             {/* Logo Name */}
-            <a href="#home" className="text-white text-lg sm:text-xl font-bold cursor-pointer relative z-30">DS</a>
+            <a href="#home" className="text-white text-xl font-bold cursor-pointer">DS</a>
 
             {/* Navigation Links */}
             <div className="hidden md:flex items-center gap-8">
@@ -114,7 +91,7 @@ export const Navbar = () => {
                     activeSection === link.href.slice(1)
                       ? "text-purple-500 font-medium"
                       : "text-gray-300"
-                  } text-sm lg:text-base hover:text-white transition-all duration-300`}
+                  } hover:text-white transition-all duration-300 relative after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 after:h-[2px] after:bg-purple-500 after:transition-all after:duration-300 hover:after:w-full`}
                 >
                   {link.title}
                 </a>
@@ -138,21 +115,18 @@ export const Navbar = () => {
 
             {/* Mobile Menu Button */}
             <button
-              type="button"
-              className="md:hidden relative z-50 p-2 w-10 h-10 flex items-center justify-center focus:outline-none"
-              onClick={toggleMenu}
-              aria-label="Toggle menu"
-              aria-expanded={isOpen}
+              className="md:hidden text-white p-2"
+              onClick={() => setIsOpen(!isOpen)}
             >
-              <div className="flex flex-col justify-center items-center w-6 h-6">
-                <span className={`block h-0.5 w-full bg-white transition-all duration-300 transform ${
-                  isOpen ? "rotate-45 translate-y-1.5" : ""
+              <div className="flex flex-col gap-1.5">
+                <span className={`block h-0.5 w-6 bg-white transition-all duration-300 ${
+                  isOpen ? "rotate-45 translate-y-2" : ""
                 }`}></span>
-                <span className={`block h-0.5 w-full bg-white transition-all duration-300 mt-1 ${
+                <span className={`block h-0.5 w-6 bg-white transition-all duration-300 ${
                   isOpen ? "opacity-0" : ""
                 }`}></span>
-                <span className={`block h-0.5 w-full bg-white transition-all duration-300 mt-1 transform ${
-                  isOpen ? "-rotate-45 -translate-y-1.5" : ""
+                <span className={`block h-0.5 w-6 bg-white transition-all duration-300 ${
+                  isOpen ? "-rotate-45 -translate-y-2" : ""
                 }`}></span>
               </div>
             </button>
@@ -162,28 +136,30 @@ export const Navbar = () => {
 
       {/* Mobile Menu */}
       <div
-        className={`fixed inset-y-0 right-0 w-[60%] bg-gray-900/95 backdrop-blur-sm px-6 py-20 transition-all duration-300 ease-in-out z-40 shadow-xl border-l border-gray-800/50 transform ${
-          isOpen ? "translate-x-0" : "translate-x-full"
-        } md:hidden`}
+        className={`md:hidden fixed top-[4rem] left-0 w-full bg-primary/95 backdrop-blur-sm py-6 px-8 transition-all duration-300 ease-in-out ${
+          isOpen
+            ? "opacity-100 translate-y-0"
+            : "opacity-0 -translate-y-full pointer-events-none"
+        }`}
       >
-        <div className="flex flex-col items-start gap-8">
+        <div className="flex flex-col items-center gap-6">
           {navLinks.map((link) => (
             <a
               key={link.title}
               href={link.href}
-              onClick={() => handleLinkClick(link.href.slice(1))}
               className={`${
                 activeSection === link.href.slice(1)
                   ? "text-purple-500 font-medium"
                   : "text-gray-300"
-              } text-lg hover:text-white transition-colors duration-300 w-full`}
+              } hover:text-white transition-colors duration-300`}
+              onClick={() => setIsOpen(false)}
             >
               {link.title}
             </a>
           ))}
-          
+
           {/* Social Links - Mobile */}
-          <div className="flex items-center gap-6 pt-8 border-t border-gray-800/50 w-full">
+          <div className="flex items-center gap-6 mt-4 pt-6 border-t border-gray-700 w-full justify-center">
             {socialLinks.map((social, index) => (
               <a
                 key={index}
@@ -198,15 +174,6 @@ export const Navbar = () => {
           </div>
         </div>
       </div>
-
-      {/* Overlay */}
-      {isOpen && (
-        <div 
-          className="fixed inset-0 bg-black/20 backdrop-blur-sm z-30 md:hidden"
-          onClick={toggleMenu}
-          aria-hidden="true"
-        />
-      )}
     </>
   );
 };
