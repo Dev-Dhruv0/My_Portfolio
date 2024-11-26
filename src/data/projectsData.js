@@ -9,7 +9,7 @@ export const projectsData = [
         category: "Web Development",
         links: {
             github: "https://github.com/Dev-Dhruv0/My_Portfolio",
-            live: "https://my-portfolio-9pw6ynwaf-dev-dhruvs-projects.vercel.app/"
+            live: "https://my-portfolio-kappa-three-67.vercel.app/"
         },
         featured: true
     },
