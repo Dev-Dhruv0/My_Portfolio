@@ -4,7 +4,7 @@ export const projectsData = [
         title: "Portfolio Website",
         description: "Modern portfolio website built with React and Framer Motion",
         longDescription: "A personal portfolio website showcasing my projects and skills. Built with React, Vite, and Framer Motion for smooth animations. Features include interactive components, responsive design, and modern UI/UX practices.",
-        thumbnail: "/portfolio.jpg", 
+        thumbnail: "/projects/portfolio.png", 
         technologies: ["React", "Vite", "Tailwind CSS", "Framer Motion"],
         category: "Web Development",
         links: {
@@ -18,7 +18,7 @@ export const projectsData = [
         title: "ShoeSphere",
         description: "Modern e-commerce website for shoes built with React and Tailwind CSS",
         longDescription: "A responsive e-commerce platform focused on shoes, featuring a modern user interface, product catalog, and smooth animations. Built with React Vite and styled with Tailwind CSS for a seamless shopping experience.",
-        thumbnail: "/projects/dashboard.png", 
+        thumbnail: "/projects/dashboard.jpg", 
         technologies: ["React", "Vite", "Tailwind CSS"],
         category: "Frontend",
         links: {
