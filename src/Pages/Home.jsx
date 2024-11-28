@@ -8,11 +8,11 @@ import { Contact } from '../components/Contact';
 const Home = () => {
   return (
     <>
-    <Hero />
-    <About />
-    <Skills />
-    <Projects />    
-    <Contact />
+      <Hero />
+      <About />
+      <Skills />
+      <Projects />    
+      <Contact />
     </>
   )
 };

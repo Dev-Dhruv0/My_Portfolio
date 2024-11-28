@@ -1,11 +1,41 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback, memo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ImageGallery } from "./ImageGallery";
 
 // Base64 placeholder image
 const placeholderImage = "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iODAwIiBoZWlnaHQ9IjYwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB4PSIwIiB5PSIwIiB3aWR0aD0iODAwIiBoZWlnaHQ9IjYwMCIgZmlsbD0iIzFmMjkzNyIvPjx0ZXh0IHg9IjUwJSIgeT0iNTAlIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMjQiIGZpbGw9IiM5Y2EzYWYiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGR5PSIuM2VtIj5JbWFnZSBub3QgYXZhaWxhYmxlPC90ZXh0Pjwvc3ZnPg==";
 
-export const ProjectModal = ({ project, isOpen, onClose }) => {
+// Memoized close button component
+const CloseButton = memo(({ onClick }) => (
+    <button
+        onClick={onClick}
+        className="text-gray-400 hover:text-white transition-colors"
+    >
+        <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="h-6 w-6"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+        >
+            <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M6 18L18 6M6 6l12 12"
+            />
+        </svg>
+    </button>
+));
+
+// Memoized technology tag component
+const TechnologyTag = memo(({ tech }) => (
+    <span className="px-3 py-1 bg-gray-700 rounded-full text-sm text-gray-300">
+        {tech}
+    </span>
+));
+
+export const ProjectModal = memo(({ project, isOpen, onClose }) => {
     const [imgSrc, setImgSrc] = useState(placeholderImage);
 
     useEffect(() => {
@@ -14,9 +44,21 @@ export const ProjectModal = ({ project, isOpen, onClose }) => {
         }
     }, [project]);
     
-    const handleImageError = () => {
+    const handleImageError = useCallback(() => {
         setImgSrc(placeholderImage);
-    };
+    }, []);
+
+    // Prevent scroll on body when modal is open
+    useEffect(() => {
+        if (isOpen) {
+            document.body.style.overflow = 'hidden';
+        } else {
+            document.body.style.overflow = 'unset';
+        }
+        return () => {
+            document.body.style.overflow = 'unset';
+        };
+    }, [isOpen]);
 
     return (
         <AnimatePresence>
@@ -35,55 +77,27 @@ export const ProjectModal = ({ project, isOpen, onClose }) => {
                         onClick={(e) => e.stopPropagation()}
                         className="bg-gray-800 rounded-xl p-6 max-w-2xl w-full max-h-[90vh] overflow-y-auto relative scrollbar-hide"
                     >
-                        {/* Header */}
                         <div className="flex justify-between items-start mb-6">
                             <h2 className="text-2xl font-bold text-white">{project.title}</h2>
-                            <button
-                                onClick={onClose}
-                                className="text-gray-400 hover:text-white transition-colors"
-                            >
-                                <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    className="h-6 w-6"
-                                    fill="none"
-                                    viewBox="0 0 24 24"
-                                    stroke="currentColor"
-                                >
-                                    <path
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                        strokeWidth={2}
-                                        d="M6 18L18 6M6 6l12 12"
-                                    />
-                                </svg>
-                            </button>
+                            <CloseButton onClick={onClose} />
                         </div>
 
-                        {/* Project Image */}
                         <div className="rounded-lg overflow-hidden mb-6 bg-gray-900">
                             <ImageGallery images={project.images}/>
                         </div>
 
-                        {/* Project Details */}
                         <div className="space-y-4">
                             <p className="text-gray-300">{project.longDescription}</p>
 
-                            {/* Technologies */}
                             <div>
                                 <h3 className="text-white font-semibold mb-2">Technologies Used</h3>
                                 <div className="flex flex-wrap gap-2">
                                     {project.technologies.map((tech, index) => (
-                                        <span
-                                            key={index}
-                                            className="px-3 py-1 bg-gray-700 rounded-full text-sm text-gray-300"
-                                        >
-                                            {tech}
-                                        </span>
+                                        <TechnologyTag key={index} tech={tech} />
                                     ))}
                                 </div>
                             </div>
 
-                            {/* Links */}
                             <div className="flex gap-4 pt-4">
                                 <a
                                     href={project.links.github}
@@ -94,15 +108,17 @@ export const ProjectModal = ({ project, isOpen, onClose }) => {
                                 >
                                     View on GitHub
                                 </a>
-                                <a
-                                    href={project.links.live}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className="px-6 py-2 bg-purple-600 hover:bg-purple-500 text-white rounded-lg transition-colors duration-300"
-                                    onClick={(e) => e.stopPropagation()}
-                                >
-                                    Live Demo
-                                </a>
+                                {project.links.live && (
+                                    <a
+                                        href={project.links.live}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="px-6 py-2 bg-purple-600 hover:bg-purple-500 text-white rounded-lg transition-colors duration-300"
+                                        onClick={(e) => e.stopPropagation()}
+                                    >
+                                        Live Demo
+                                    </a>
+                                )}
                             </div>
                         </div>
                     </motion.div>
@@ -110,4 +126,4 @@ export const ProjectModal = ({ project, isOpen, onClose }) => {
             )}
         </AnimatePresence>
     );
-};
+});

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { FaGithub, FaLinkedin, FaTwitter } from "react-icons/fa";
+import { FaGithub, FaLinkedin, FaPinterest } from "react-icons/fa";
 
 export const Navbar = () => {
   // Navlinks array
@@ -12,9 +12,9 @@ export const Navbar = () => {
 
   // Social Links
   const socialLinks = [
-    { icon: <FaGithub className="w-5 h-5" />, href: "https://github.com/yourusername" },
-    { icon: <FaLinkedin className="w-5 h-5" />, href: "https://linkedin.com/in/yourusername" },
-    { icon: <FaTwitter className="w-5 h-5" />, href: "https://twitter.com/yourusername" },
+    { icon: <FaGithub className="w-5 h-5" />, href: "https://github.com/Dev-Dhruv0" },
+    { icon: <FaLinkedin className="w-5 h-5" />, href: "https://www.linkedin.com/in/dhruv-sharma-376572241" },
+    { icon: <FaPinterest className="w-5 h-5" />, href: "https://pinterest.com/yourusername" },
   ];
 
   // States

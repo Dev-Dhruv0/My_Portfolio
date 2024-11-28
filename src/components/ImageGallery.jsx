@@ -1,53 +1,76 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback, memo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
-export const ImageGallery = ({ images, initialImage }) => {
-    // State Management
+// Memoized navigation buttons to prevent unnecessary re-renders
+const NavigationButton = memo(({ direction, onClick, children }) => (
+    <button
+        onClick={onClick}
+        className={`absolute ${direction === 'left' ? 'left-2' : 'right-2'} top-1/2 transform -translate-y-1/2 bg-black/50 p-2 rounded-full text-white hover:bg-black/75 transition-colors`}
+    >
+        {children}
+    </button>
+));
+
+// Memoized thumbnail component
+const Thumbnail = memo(({ image, isActive, onClick }) => (
+    <button
+        onClick={onClick}
+        className={`flex-shrink-0 w-16 h-16 rounded-md overflow-hidden
+            ${isActive ? 'ring-2 ring-purple-500' : ''}`}
+    >
+        <img
+            src={image.url}
+            alt={image.caption}
+            className="w-full h-full object-cover"
+            loading="lazy"
+        />
+    </button>
+));
+
+export const ImageGallery = memo(({ images, initialImage }) => {
     const [currentIndex, setCurrentIndex] = useState(0);
-    const [loading, setLoading] = useState(true);
-    const [touchStart, setTouchStart] = useState(0);
     const [isPlaying, setIsPlaying] = useState(false);
+    const [touchStart, setTouchStart] = useState(0);
 
-    // Navigation Functions
-    const nextImage = () => {
+    // Memoized navigation functions
+    const nextImage = useCallback(() => {
         setCurrentIndex((prev) => (prev + 1) % images.length);
-    };
+    }, [images.length]);
 
-    const prevImage = () => {
+    const prevImage = useCallback(() => {
         setCurrentIndex((prev) => (prev - 1 + images.length) % images.length);
-    };
+    }, [images.length]);
 
-    // Keyboard Navigation
-    const handleKeyPress = (e) => {
+    // Memoized event handlers
+    const handleKeyPress = useCallback((e) => {
         if (e.key === "ArrowRight") nextImage();
         if (e.key === "ArrowLeft") prevImage();
-    };
+    }, [nextImage, prevImage]);
 
-    // Touch Navigation
-    const handleTouchStart = (e) => {
+    const handleTouchStart = useCallback((e) => {
         setTouchStart(e.touches[0].clientX);
-    };
+    }, []);
 
-    const handleTouchEnd = (e) => {
+    const handleTouchEnd = useCallback((e) => {
         const touchEnd = e.changedTouches[0].clientX;
-        if (touchStart - touchEnd > 50) nextImage(); //Swipe left
-        if (touchStart - touchEnd < -50) prevImage(); //Swipe right
-    };
+        if (touchStart - touchEnd > 50) nextImage();
+        if (touchStart - touchEnd < -50) prevImage();
+    }, [touchStart, nextImage, prevImage]);
 
-    // Auto-play functionality
+    // Slideshow effect
     useEffect(() => {
         let interval;
         if (isPlaying) {
             interval = setInterval(nextImage, 3000);
         }
         return () => clearInterval(interval);
-    }, [isPlaying]);
+    }, [isPlaying, nextImage]);
 
-    // Add keyboard event listeners
+    // Keyboard event listeners
     useEffect(() => {
         window.addEventListener('keydown', handleKeyPress);
         return () => window.removeEventListener('keydown', handleKeyPress);
-    }, []);
+    }, [handleKeyPress]);
 
     if (!images || images.length === 0) {
         return null;
@@ -55,7 +78,6 @@ export const ImageGallery = ({ images, initialImage }) => {
 
     return (
         <div className="relative w-full">
-            {/* Main Image Display */}
             <div
                 className="relative aspect-video overflow-hidden rounded-lg"
                 onTouchStart={handleTouchStart}
@@ -71,52 +93,37 @@ export const ImageGallery = ({ images, initialImage }) => {
                         exit={{ opacity: 0, x: -100 }}
                         transition={{ duration: 0.3 }}
                         className="w-full h-full object-cover"
+                        loading="lazy"
                     />
                 </AnimatePresence>
 
-                {/* Navigation Arrows */}
-                <button
-                    onClick={prevImage}
-                    className="absolute left-2 top-1/2 transform -translate-y-1/2 bg-black/50 p-2 rounded-full text-white hover:bg-black/75 transition-colors"
-                >
+                <NavigationButton direction="left" onClick={prevImage}>
                     <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
                     </svg>
-                </button>
-                <button
-                    onClick={nextImage}
-                    className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-black/50 p-2 rounded-full text-white hover:bg-black/75 transition-colors"
-                >
+                </NavigationButton>
+                <NavigationButton direction="right" onClick={nextImage}>
                     <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                     </svg>
-                </button>
+                </NavigationButton>
             </div>
 
-            {/* Thumbnail Strip */}
-            <div className="flex gap-2 mt-4 overflow-x-auto pb-2">
+            <div className="flex gap-2 mt-4 overflow-x-auto pb-2 scrollbar-hide">
                 {images.map((image, index) => (
-                    <button
+                    <Thumbnail
                         key={image.id}
+                        image={image}
+                        isActive={currentIndex === index}
                         onClick={() => setCurrentIndex(index)}
-                        className={`flex-shrink-0 w-16 h-16 rounded-md overflow-hidden
-                            ${currentIndex === index ? 'ring-2 ring-purple-500' : ''}`}
-                    >
-                        <img
-                            src={image.url}
-                            alt={image.caption}
-                            className="w-full h-full object-cover"
-                        />
-                    </button>
+                    />
                 ))}
             </div>
 
-            {/* Caption */}
             <p className="text-sm text-gray-400 mt-2">
                 {images[currentIndex].caption}
             </p>
 
-            {/* Controls */}
             <div className="flex gap-2 mt-2">
                 <button
                     onClick={() => setIsPlaying(!isPlaying)}
@@ -127,4 +134,4 @@ export const ImageGallery = ({ images, initialImage }) => {
             </div>
         </div>
     );
-};
+});

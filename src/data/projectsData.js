@@ -73,17 +73,34 @@ export const projectsData = [
     },
     {
         id: 3,
-        title: "Weather App",
-        description: "Real-time weather application with location tracking",
-        longDescription: "Weather application that provides real-time weather information based on user location. Features include 7-day forecast, weather alerts, and location search functionality.",
-        thumbnail: "/weather.jpg", 
-        technologies: ["JavaScript", "Weather API", "HTML5", "CSS3"],
+        title: "ImageFlow",
+        description: "Modern image upload and gallery application with preview functionality",
+        longDescription: "A sleek image management application that allows users to upload multiple images with real-time preview functionality. Features include support for up to 5 images, image type validation, WhatsApp-style image preview, and a dedicated gallery page for viewing uploaded images. Built with modern web technologies and planned for future backend integration.",
+        thumbnail: "/projects/imageflow/upload.png", 
+        images: [
+            {
+                id: 1,
+                url: "/projects/imageflow/upload.png",
+                caption: "Image Upload Interface"
+            },
+            {
+                id: 2,
+                url: "/projects/imageflow/preview.png",
+                caption: "Image Preview Section"
+            },
+            {
+                id: 3,
+                url: "/projects/imageflow/gallery.png",
+                caption: "Gallery View"
+            }
+        ],
+        technologies: ["React", "Tailwind CSS", "Framer Motion"],
         category: "Frontend",
         links: {
-            github: "https://github.com/yourusername/weather-app",
-            live: "https://weather-app-demo.com"
+            github: "https://github.com/Dev-Dhruv0/ImageFlow",
+            live: "https://image-flow-dev-dhruvs-projects.vercel.app/"
         },
-        featured: false
+        featured: true
     }
 ];
 
