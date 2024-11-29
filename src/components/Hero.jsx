@@ -69,7 +69,7 @@ const Hero = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.4 }}
             >
-              {['React', 'JavaScript', 'TypeScript', 'Node.js', 'Tailwind'].map((tag, index) => (
+              {['React', 'Tailwind', 'JavaScript', 'Node.js', 'My SQL'].map((tag, index) => (
                 <motion.span 
                   key={tag}
                   initial={{ opacity: 0, scale: 0.8 }}
