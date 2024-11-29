@@ -36,6 +36,16 @@ export const About = () => {
     setSelectedTech(null);
   };
 
+  const handleDownload = () => {
+    const cvUrl = '/Dhruv-CV.pdf';
+    const link = document.createElement('a');
+    link.href = cvUrl;
+    link.download = 'Dhruv-CV.pdf';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
   return (
     <section 
       id='about' 
@@ -75,7 +85,10 @@ export const About = () => {
               to deliver exceptional user experiences.
             </p>
             <div className='flex gap-4'>
-              <button className='px-6 py-3 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors duration-300'>
+              <button 
+                onClick={handleDownload}
+                className='px-6 py-3 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors duration-300'
+              >
                 Download CV
               </button>
               <button className='px-6 py-3 border border-purple-600 text-white rounded-lg hover:bg-purple-600/10 transition-colors duration-300'>
