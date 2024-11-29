@@ -97,7 +97,7 @@ export const projectsData = [
         technologies: ["React", "Tailwind CSS", "Framer Motion"],
         category: "Frontend",
         links: {
-            github: "https://github.com/Dev-Dhruv0/ImageFlow",
+            github: "https://github.com/Dev-Dhruv0/Image-Flow",
             live: "https://image-flow-dev-dhruvs-projects.vercel.app/"
         },
         featured: true
