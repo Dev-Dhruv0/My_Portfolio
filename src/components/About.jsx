@@ -37,10 +37,10 @@ export const About = () => {
   };
 
   const handleDownload = () => {
-    const cvUrl = '/Dhruv-CV.pdf';
+    const cvUrl = '/Dhruv - CV .pdf';
     const link = document.createElement('a');
     link.href = cvUrl;
-    link.download = 'Dhruv-CV.pdf';
+    link.download = 'Dhruv - CV .pdf';
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -82,7 +82,8 @@ export const About = () => {
             <p className='text-gray-300 text-lg mb-6'>
               I specialize in React.js and modern JavaScript, creating responsive and user-friendly 
               applications. My approach combines clean code practices with creative problem-solving 
-              to deliver exceptional user experiences.
+              to deliver exceptional user experiences. I enhance my development workflow using AI tools 
+              and prompt engineering to build smarter, more efficient web solutions.
             </p>
             <div className='flex gap-4'>
               <button 
