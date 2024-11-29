@@ -1,3 +1,4 @@
+// Test change for Vercel deployment
 export const projectsData = [
     {
         id: 1,
