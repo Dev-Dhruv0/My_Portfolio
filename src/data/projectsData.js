@@ -24,7 +24,7 @@ export const projectsData = [
             },
         ],
         technologies: ["React", "Vite", "Tailwind CSS", "Framer Motion"],
-        category: "Web Development",
+        category: "Frontend",
         links: {
             github: "https://github.com/Dev-Dhruv0/My_Portfolio",
             live: "https://my-portfolio-kappa-three-67.vercel.app/"
