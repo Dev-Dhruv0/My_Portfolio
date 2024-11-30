@@ -95,8 +95,8 @@ export const projectsData = [
                 caption: "Gallery View"
             }
         ],
-        technologies: ["React", "Tailwind CSS", "Framer Motion"],
-        category: "Frontend",
+        technologies: ["React", "Tailwind CSS", "Neon Database", "Blob Store", "API"],
+        category: "Full Stack",
         links: {
             github: "https://github.com/Dev-Dhruv0/Image-Flow",
             live: "https://image-flow-dev-dhruvs-projects.vercel.app/"
