@@ -14,7 +14,7 @@ export const Navbar = () => {
   const socialLinks = [
     { icon: <FaGithub className="w-5 h-5" />, href: "https://github.com/Dev-Dhruv0" },
     { icon: <FaLinkedin className="w-5 h-5" />, href: "https://www.linkedin.com/in/dhruv-sharma-376572241" },
-    { icon: <FaPinterest className="w-5 h-5" />, href: "https://pinterest.com/yourusername" },
+    { icon: <FaPinterest className="w-5 h-5" />, href: "https://in.pinterest.com/who0me0dhruv/" },
   ];
 
   // States
