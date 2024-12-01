@@ -91,7 +91,7 @@ export const Navbar = () => {
                     activeSection === link.href.slice(1)
                       ? "text-purple-500 font-medium"
                       : "text-gray-300"
-                  } hover:text-white transition-colors duration-300 relative after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 after:h-[2px] after:bg-purple-500 after:transition-all after:duration-300 hover:after:w-full`}
+                  } hover:text-white transition-all duration-300 relative after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 after:h-[2px] after:bg-purple-500 after:transition-all after:duration-300 hover:after:w-full`}
                 >
                   {link.title}
                 </a>
@@ -136,7 +136,7 @@ export const Navbar = () => {
 
       {/* Mobile Menu */}
       <div
-        className={`md:hidden fixed top-[4rem] left-0 w-full bg-primary/95 backdrop-blur-sm py-6 px-8 transition-all duration-300 ease-in-out z-[100] ${
+        className={`md:hidden fixed top-[1rem] left-0 w-full bg-primary/95 backdrop-blur-sm py-6 px-8 transition-all duration-300 ease-in-out z-[100] ${
           isOpen
             ? "opacity-100 translate-y-0"
             : "opacity-0 -translate-y-full pointer-events-none"
@@ -151,20 +151,8 @@ export const Navbar = () => {
                 activeSection === link.href.slice(1)
                   ? "text-purple-500 font-medium"
                   : "text-gray-300"
-              } hover:text-white transition-colors duration-300 w-full text-center`}
-              onClick={(e) => {
-                e.preventDefault();
-                const sectionId = link.href.slice(1);
-                const element = document.getElementById(sectionId);
-                if (element) {
-                  const offsetTop = element.offsetTop;
-                  window.scrollTo({
-                    top: offsetTop - 80, // Adjust for navbar height
-                    behavior: 'smooth'
-                  });
-                  setIsOpen(false);
-                }
-              }}
+              } hover:text-white transition-colors duration-300`}
+              onClick={() => setIsOpen(false)}
             >
               {link.title}
             </a>
